@@ -30,10 +30,23 @@ app.get("/webhook", (req, res) => {
 
 // Instagram / Messenger / WhatsApp events arrive here.
 app.post("/webhook", (req, res) => {
-  // Acknowledge Meta immediately. Business logic will be added after
-  // the Meta account and webhook subscriptions are connected.
   console.log("Meta webhook event:", JSON.stringify(req.body));
   return res.sendStatus(200);
+});
+
+// Instagram professional login callback.
+app.get("/auth/instagram/callback", (req, res) => {
+  const code = req.query.code;
+
+  if (!code) {
+    return res.status(400).send("ELYOM - Code Instagram manquant.");
+  }
+
+  console.log("Instagram authorization callback received.");
+
+  return res.status(200).send(
+    "ELYOM - Autorisation Instagram reçue. Vous pouvez fermer cette fenêtre."
+  );
 });
 
 app.listen(PORT, () => {
